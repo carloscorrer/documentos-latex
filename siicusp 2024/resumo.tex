@@ -1,0 +1,147 @@
+\documentclass[10pt]{article}
+
+%imagens
+\usepackage{tikz,graphicx}
+\usepackage{caption,subcaption}
+\usepackage{float}
+
+%matemáticas
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage[ISO]{diffcoeff}
+\usepackage{braket,esint}
+\usepackage{bbold}
+
+%header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength\headheight{60pt}
+\renewcommand{\headrulewidth}{0pt}
+\lhead{\includegraphics[width=0.2\linewidth]{siicusp.jpg}}
+\fancyfoot[C]{\thepage}
+\fancyhead[R]{}
+
+%formatação
+\usepackage{comment}
+\usepackage{indentfirst}
+\usepackage[
+ a4paper,
+ tmargin=3.3cm,
+ bmargin=4.2cm,
+ lmargin=2.4cm,
+ rmargin=2.4cm,
+]{geometry}
+\setlength{\columnsep}{0.8cm}
+\usepackage[T1]{fontenc}
+\usepackage{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{lmodern}
+\usepackage{multicol}
+\usepackage{titlesec}
+\titleformat*{\section}{\centering\fontsize{13}{\baselineskip}\selectfont\bfseries}
+
+%referências
+\usepackage{hyperref}
+\usepackage[capitalize, brazilian, nameinlink, noabbrev]{cleveref}
+\hypersetup{ 
+colorlinks = true,
+linkcolor = blue,
+filecolor = black,
+urlcolor = black
+}
+
+
+\begin{document}
+\begin{center}
+    \fontsize{13}{\baselineskip}\selectfont{\textbf{Radiação, Aceleração e o Efeito Unruh}\\
+    \vspace*{3mm}
+    \textbf{Carlos Henrique Correr da Silva\\
+    \vspace*{3mm}
+            Orientador: André Landulfo}\\
+    \vspace*{3mm}
+    {Universidade de São Paulo / Universidade Federal do ABC}}\\
+    \vspace*{2mm}
+    carloscorrer@usp.br
+\end{center}
+\vspace*{2mm}
+
+\begin{multicols*}{2}
+    \section*{Objetivos}
+    O conceito de radiação emitida por uma carga acelerada foi amplamente discutido e várias questões conceituais sobre sua consistência intrigaram a comunidade científica. Atualmente, foi mostrado \cite{boulware} que cargas aceleradas de fato irradiam e, ainda por cima, este conceito não é covariante, isto é, observadores acelerados juntamente com a carga não observam a radiação.
+
+    Por outro lado, no contexto da teoria quântica de campos (QFT) em espaços-tempos curvos, um resultado notável é o chamado efeito Unruh, que prevê que observadores uniformemente acelerados observam o vácuo dos observadores inerciais no espaço-tempo de Minkowski como um banho térmico de partículas, cuja temperatura é dada por
+    \begin{equation}
+        T=\frac{a\hbar}{2\pi ck_B},
+    \end{equation}
+    em que \(a\) é a aceleração própria do observador.
+
+    O resultado surpreendente é que usando o formalismo de QFT, chegamos a conclusão de que os observadores uniformemente acelerados interpretam o emissão (inercial) como uma combinação de absorção e emissão de fótons de Rindler de energia nula pelo e do banho térmico de Unruh.
+
+    O objetivo do projeto é analisar o modelo de brinquedo de radiação emitida por uma carga (escalar) uniformemente acelerada no espaço-tempo de Mikowski nos contextos clássicos e quânticos. Para o caso clássico, desejamos verificar a hipótese de que, de fato, os modos de Rindler de energia nula são os únicos que contribuem e recuperam a solução retardada do campo escalar. Para análise quântica, queremos calcular como observadores no futuro assintótico medem o valor esperado do campo e do tensor de energia momento quando o estado é o vácuo (inercial) de Minkowski, \(\ket{0_\text{in}}\). Por fim, analisamos a taxa de emissão de partículas para ambas as situções.
+
+    \section*{Métodos e procedimentos}
+    Para começar a análise, primeiro, tivemos que aprender o formalismo da teoria de campos em espaços-tempos curvos. A principal bibliografia utilizada foi o livro do Wald \cite{waldqft} do capítulo 1 ao 5 (omitindo o tratamento algébrico).
+
+    Após essa etapa, era necessário entender a emissão de radiação por uma carga acelerada e seu diversos aspectos conceituais. Num primeiro momento, seguimos o livro do Zangwill \cite{zang} que discutem desde a definição de radiação até resultados como a expressão da radiação Larmor emitida por uma carga uniformemente acelerada. Por fim, o tratamento completo do caso eletrodinâmico clássico foi estudado a partir do paper do Boulware \cite{boulware}, em que a não covariância da radiação é discutida.
+
+    Finalmente, com a base teórica estabelecida, disparamos para análise do paper do meu orientador \cite{landulfo} em que as perguntas apresentadas ao longo dos objetivos foram pautadas.
+
+    
+    \section*{Resultados}
+    Classicamente, começamos com a equação de não homogênea de Klein-Gordon cuja fonte é uma carga, com magnitude \(q\), e com aceleração própria constante \(a\) entre \(-T<t<T\) na cunha da direita,
+    \begin{equation}
+        \nabla^a\nabla_a\phi=j.
+        \label{eq:kg}
+    \end{equation}
+    Tomando uma superfície de Cauchy \(\Sigma\subset\mathbb{R}^4-J^-(\textrm{supp}j)\), na qual a solução avançada, \(A_j\), se anula podemos expandir a solução retardada , \(Rj\), em modos de Unruh, \(w^{\sigma}_{\omega\mathbf{k}_{\perp}}\) (\(\sigma=1,2\)), como
+    \begin{equation}
+        Rj=-\sum_{\sigma=1}^2\int_0^{\infty}\mathrm{d}\omega\int\mathrm{d}^2\mathbf{k}_\perp w^{\sigma}_{\omega\mathbf{k}_{\perp}}\left\langle w^{\sigma}_{\omega\mathbf{k}_{\perp}},Ej\right\rangle w^{\sigma}_{\omega\mathbf{k}_{\perp}},
+    \end{equation}
+    em que \(\langle\cdot,\cdot\rangle\) é o produto interno de Klein-Gordon e \(Ej=Aj-Rj\). Os modos de Unruh são extremamente úteis porque são indexados com parâmetros dos observadores acelerados, mas tem frequência positiva com respeito ao tempo inercial \(t\).
+
+    No limite em que a carga acelera desde o infinito passado, o cálculo dos coeficientes na região \(t>\lvert z\rvert\) leva a
+    \begin{equation}
+        \begin{aligned}
+            Rj&=-\frac{iq}{\pi\sqrt{2a}}\int\mathrm{d}^2\mathbf{k}_\perp K_0\left(\frac{k_\perp}{a}\right)w_{0\mathbf{k}_\perp}^2\\
+            &=-\frac{q}{4\pi\rho_0(x)},
+        \end{aligned}
+    \end{equation}
+    em que \(K_0\) é a função modificada de Bessel de ordem 0. É evidente da expressão acima que, não somente apenas os modos de energia nula de Rindler, \(\omega=0\), contribuem para a construção da solução retardada, mas também o cálculo explícito leva exatamente a solução retardada usual.
+
+    Olhando agora para equação quantizada, a solução geral pode ser escrita em função da solução avançada,
+    \begin{equation}
+        \hat{\phi}(t,\mathbf{x})=Aj(t,\mathbf{x})\hat{\mathbb{1}}+\hat{\phi}_{\text{out}}(t,\mathbf{x}),
+    \end{equation}
+    em que \(\hat{\phi}_{\text{out}}\) é solução da equação homogênea que pode ser expandida em termos dos operadores de criação e aniquilação, \(\hat{a}^{\dagger}\) e \(\hat{a}\), e um conjunto completos de modos frequência positiva. 
+    
+    Seja \(\ket{0_\text{in}}\) e \(\ket{0_\text{out}}\) os estados de vácuo como definido pelos observadores no infinito passado e futuro, respectivamente. Podemos relacionar ambos a partir de uma transformação de Bogoliubov \(\hat{S}\), tal que \(\ket{0_\text{in}}=\hat{S}\ket{0_\text{out}}\), de modo que, expandindo \(\hat{\phi}_\text{out}\) em termo dos modos de Unruh, temos
+    \begin{equation}
+        \ket{0_\text{in}}=e^{-\frac{\lVert KEj\rVert^2}{2}}e^{-\hat{a}^\dagger_{\text{out}}(KEj)}\ket{0_\text{out}}\\
+    \end{equation}
+    em que \(KEj\) é a parte de frequência positiva de \(Ej\). Note que este estado é coerente e construído apenas a partir dos modos com \(\omega=0\), visto que apenas estes estão tem produto escalar não nulo com \(Ej\) no limite de interesse. A partir dele, também é possível calcular os valor esperado do campo como
+    \begin{equation}
+        \bra{0_\text{in}}\hat{\phi}_\text{out}(x)\ket{0_\text{in}}=Rj,
+    \end{equation}
+    que é justamente o resultado clássico. Para o tensor de energia-momento normalmente ordenado, obtemos
+    \begin{equation}
+        \bra{0_\text{in}}:\hat{T}^\text{out}_{ab}:\ket{0_\text{in}}=\nabla_aRj\nabla_bRj-\frac{1}{2}\eta_{ab}\nabla^cRj\nabla_cRj,
+    \end{equation}
+    que também é o expressão da teoria clássica. Particularmente, se integramos o fluxo de energia no futuro assintótico, encontramos
+    \begin{equation}
+        \int\mathrm{d}S^b\bra{0_\text{in}}:\hat{T}^\text{out}_{ab}:\ket{0_\text{in}}(\partial_t)^a=\frac{q^2a^2}{12\pi},
+    \end{equation}
+    que é a fórmula de Larmor (escalar) usual encontrada no contexto da eletrodinâmica.
+
+    Por fim, se definirmos um número clássico de partículas irradiados (como visto por observadores inerciais) como \(N=\langle KRj,KRj\rangle\) e consideramos o operador número (quântico) de cada modo \(\hat{N}^{\text{out}}_{\omega\mathbf{k}_\perp}\) e integramos sobre todos os possíveis modos, obtemos
+    \begin{equation}
+        \frac{N}{T}=\frac{\bra{0_\text{in}}\hat{N}^{\text{out}}_{\omega\mathbf{k}_\perp}\ket{0_\text{in}}}{T}=\frac{q^2a}{4\pi^2}.
+    \end{equation}
+
+    \section*{Conclusão}
+    A análise do problema no limite em que \(T\to\infty\), mostra que de fato, tanto no caso clássico, quanto no quântico, apenas os modos com energia nula de Rindler contribuem para a solução retardada do campo. Ademais, ambos os formalismos concordam no número de partículas irradiadas no processo de emissão.
+
+    Além disso, especificamente no caso quântico, quando o estado inicial é o vácuo dos observadores inerciais, os valores esperados do campo e do tensor de energia-momento recupera os resultados clássicos. Ainda por cima, para observadores no infinito futuro, o estado evolui para um estado coerente e o fluxo de energia devolve a expressão conhecida da radiação Larmor.
+
+    \bibliographystyle{plain}
+    \bibliography{refs}
+\end{multicols*}
+\end{document}
