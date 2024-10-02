@@ -1,4 +1,4 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[12pt]{article}
 
 %imagens
 \usepackage{tikz,graphicx}
@@ -11,22 +11,39 @@
 \usepackage{braket,esint}
 
 %formatação
+\usepackage[
+ a4paper,
+ tmargin=3.3cm,
+ bmargin=4.2cm,
+ lmargin=2.4cm,
+ rmargin=2.4cm,
+]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{inputenc}
 \usepackage[portuguese]{babel}
 \usepackage{lmodern}
 \usepackage{indentfirst}
 \usepackage{orcidlink}
+\usepackage{csquotes}
+\usepackage{bbold}
 
 %referências
 \usepackage{hyperref}
-\usepackage[capitalize, brazilian, nameinlink, noabbrev]{cleveref}
+\usepackage[capitalize, brazilian, nameinlink]{cleveref}
 \hypersetup{ 
 colorlinks = true,
 linkcolor = blue,
 filecolor = black,
 urlcolor = black
 }
+
+%funções
+\newcommand{\m}{\mathcal{M}}
+\newcommand{\s}{\mathcal{S}}
+\newcommand{\kg}{\left(\nabla^a\nabla_a+m^2\right)}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\innerkg}[2]{\langle#1,#2\rangle_{\text{KG}}}
+\newcommand{\h}{\mathcal{H}}
 
 \title{Radiação, Aceleração e o Efeito Unruh}
 \author{Carlos H. Correr da Silva\orcidlink{0000-0002-3598-4412}}
@@ -38,9 +55,9 @@ urlcolor = black
     \begin{center}
         \vspace{5cm}
         \makeatletter
-        {\huge\@title\\
+        {\huge\@title}\\
         \vspace{0.5cm}
-        \LARGE \href{https://bv.fapesp.br/pt/pesquisa/buscador/?q2=(id_pesquisador_exact%3A724334)%20AND%20(bolsa_exact:%22Bolsas%20no%20Brasil%22%20AND%20situacao:%22Em%20andamento%22)}{Processo: 24/01141-1}}\\
+        {\LARGE \href{https://bv.fapesp.br/pt/pesquisa/buscador/?q2=(id_pesquisador_exact%3A724334)%20AND%20(bolsa_exact:%22Bolsas%20no%20Brasil%22%20AND%20situacao:%22Em%20andamento%22)}{Processo: 24/01141-1}}\\
         \hrulefill \\
         \vspace{0.5cm}
         {\LARGE\@author
@@ -67,7 +84,134 @@ No fim do período, estou na metade do 6° semestre, cursando as disciplinas: Re
 
 Ainda por cima, participei dos Journal Clubs do grupo, que permite o contato com diversas tópicos atuais de pesquisa na área. Também apresentei um pôster sobre o Efeito Unruh na VI Escola Jayme Tiomno, uma escola de inverno do IFUSP, na qual sou um dos organizadores.
 
-\section{Teoria quântica de campos em espaços-tempos curvos}
+\section{Teoria quântica de um campo escalar em espaços-curvos}
+\subsection*{Campo de Klein-Gordon}
+Seja \((\m,g_{ab})\) um espaço-tempo globalmente hiperbólico, então, podemos decompor \(\m\) em uma folição parametrizada por uma função diferenciável \(t:\m\to\mathbb{R}\) de superfícies de Cauchy \(\Sigma_t\) tal que \(\m\cong\mathbb{R}\times\Sigma_t\).
+
+Um campo escalar (spin-0) e massa \(m\) nesse espaço-tempo satisfaz a equação de Klein-Gordon,
+\begin{equation}
+    \kg\phi=0,
+    \label{eq:kg}
+\end{equation}
+em que \(\nabla^a\) é a derivada covariante compatível com a métrica. O momento conjugado ao campo é dado por
+\begin{equation}
+    \pi=n^a\nabla_a\phi.
+\end{equation}
+Assim, dada a hierbolicidade global do campo, uma solução da equação de Klein-Gordon está unicamente definido dadas condições iniciais, isto é, funções suaves numa superfície de Cauchy para o valor do campo e seu momento.
+Agora, dadas duas soluções \(\phi_1\) e \(\phi_2\) da \cref{eq:kg}, definimos a forma simplética
+\begin{equation}
+    \Omega(\phi_1,\phi_2)\equiv\int_{\Sigma_t}\dd^3x\sqrt{h}\left(\phi_2n^a\nabla_a\phi_1-\phi_1n^a\nabla_a\phi_2\right),
+\end{equation}
+em que \(h_{ab}=g_{ab}\vert_{\Sigma_t}\). Notando que duas superfícies de Cauchy definem um volume no espaço-tempo, podemos usar a lei da divergência de Gauss para mostrar que a forma independe do parâmetro \(t\) da superfície, ou seja,
+\begin{equation}
+    \diff{}{t}\Omega(\phi_1,\phi_2)=0.
+\end{equation}
+
+Finalmente, se \(\s\) é o espaço de soluções da \cref{eq:kg}, o par \((\s,\Omega)\) é suficiente para realizar a quantização do campo.
+
+\subsection*{Quantização}
+Primeiro, complexificamos o espaço de soluções, isto é, \(\s\to\s^{\mathbb{C}}\) e definimos nele o produto interno de Klein-Gordon,
+\begin{equation}
+    \innerkg{f_1}{f_2}\equiv-i\Omega(f_1^*,f_2),\; f_1,f_2\in\s^{\mathbb{C}}.
+\end{equation}
+Agora, basta tomar um subconjunto \(\h\subset\s^{\mathbb{C}}\) que satisfaça as seguintes propriedades:
+\begin{enumerate}
+    \item \(\s^{\mathbb{C}}=\h\oplus\overline{\h}\), em que \(\overline{\h}\) é o espaço conjugado a \(\h\)
+    \item \(\innerkg{\cdot}{\cdot}\) é positivo definido em \(\h\) e, portanto, \(\left(\h,\innerkg{\cdot}{\cdot}\right)\) é um espaço de Hilbert.
+    \item Para todo \(f_1\in\h\) e \(f_2\in\overline{\h}\) temos \(\innerkg{f_1}{f_2}=0\).
+\end{enumerate}
+
+Nessa construção, \(\h\) é o espaço de \enquote{1-partícula}\footnote{A seguir veremos que o conceito de partícula é delicado no contexto de TQCEC}, portanto, o espaço de estados será dado pelo espaço de Fock \(\mathcal{F}(\h)\) associado à escolha de \(\h\).
+
+É possível definir naturalmente operadores de aniquilação e de criação, \(a(\xi^*)\) e \(a^\dagger(\xi)\) no espaço de Fock simétrico, em que \(\xi\in\h\) representa o modo que está sendo criado ou aniquilado. Além disso, diramente da definição, obtemos as relações de comutação
+\begin{subequations}
+    \begin{align}
+        &\relax\left[a(\xi^*),a^{\dagger}(\eta)\right]=\innerkg{\xi}{\eta}\mathbb{1},\\
+        &\relax\left[a(\xi^*),a(\eta^*)\right]=0,\\
+        &\relax\left[a^{\dagger}(\xi),a^{\dagger}(\eta)\right]=0,
+    \end{align}
+\end{subequations}
+para todo \(\xi,\eta\in\h\). Além disso, a construção leva a uma noção de vácuo associado com o estado que é anulado por qualquer operador de aniquilação,
+\begin{equation}
+    a(\xi^*)\ket{0}=0,\;\forall\xi\in\h,
+\end{equation}
+do qual podemos definir um estado de \(n\) partículas com modo \(\xi\) como
+\begin{equation}
+    \ket{n_\xi}\equiv\frac{\left[a^{\dagger}(\xi)\right]^n}{\sqrt{n!}}\ket{0}.
+\end{equation}
+
+Finalmente, podemos expandir o campo (quantizado) num conjunto completo de soluções \(\{u_j\}\) de frequência positiva como
+\begin{equation}
+    \hat{\phi}(x)=\sum_j\left[u_ja(u_j ^*)+u_j^*a^{\dagger}(u_j)\right].
+\end{equation}
+
+É conveniente definir os projetores \(K:\s^{\mathbb{C}}\to\h\) e \(\overline{K}:\s^\mathbb{C}\to\overline{\h}\) que dado uma solução \(\varphi=\varphi^++\varphi^-\) com \(\varphi^+\in\h\) e \(\varphi^-\in\overline{\h}\), a ação desses operadores é definida como
+\begin{equation}
+    K\varphi=\varphi^+\hspace{1cm}\text{e}\hspace{1cm}\overline{K}\varphi=\varphi^-.
+\end{equation}
+
+Portanto, expandindo \(\varphi\) no base de soluções \(\{u_j\}\), obtemos a ação explícita dos projetores,
+\begin{equation}
+    \varphi=\sum_j\left[\innerkg{u_j}{\varphi}u_j-\innerkg{u_j^*}{\varphi}u_j^*\right],
+\end{equation}
+então,
+\begin{equation}
+    K\varphi=\innerkg{u_j}{\varphi}u_j\hspace{1cm}\text{e}\hspace{1cm}\overline{K}\varphi=-\sum_j\innerkg{u_j^*}{\varphi}u_j^*.
+\end{equation}
+
+\subsection*{Operador campo}
+Seja \(f\in C_0^{\infty}(\m)\), ou seja, uma função suave de suporte compacto. Denotamos por \(G_A(x,x')\) e \(G_R(x,x')\) as funções de Green avançada e retardada do operador de Klein-Gordon. Assim, temos as soluções retardada e avançada com fonte \(f\) dadas por
+\begin{subequations}
+    \begin{align}
+        &Rf(x)\equiv\int_\m\dd^4x'\sqrt{-g}G_R(x,x')f(x')\\
+        &Af(x)\equiv\int_\m\dd^4x'\sqrt{-g}G_A(x,x')f(x'),
+    \end{align}
+\end{subequations}
+em que \(Rf\) tem suporte no futuro do suporte de \(f\) e \(Af\) no passado. Note que podemos definir uma solução da \cref{eq:kg} a partir das soluções retardada e avançada como
+\begin{equation}
+    Ef(x)\equiv Af(x)-Rf(x).
+\end{equation}
+De fato esta é uma solução homogênea, dado que
+\begin{subequations}
+    \begin{align}
+        \kg Ef(x)&=\kg Af(x)-\kg Rf(x)\\
+        &=f(x)-f(x)=0.
+    \end{align}
+\end{subequations}
+
+Essa solução é extramemente útil pois goza da propriedade que dada um solução qualquer \(\varphi\) da \cref{eq:kg}, o produto interno desta com \(Ef\) pode ser escrito como uma integral no espaço-tempo,
+\begin{equation}
+    -i\innerkg{\varphi}{Ej}=\int_\m\dd^4xf(x)\varphi^*(x).
+    \label{eq:int-inner}
+\end{equation}
+Além disso, se identificarmos \(E:C_0^{\infty}(\m)\to\s\) como um mapa de funções em soluções, temos que esse mapa é sobrejetor, isto é, toda solução está associada a uma função suave da variedade.
+
+Agora, definimos o operador campo associado a uma função \(f\) como
+\begin{subequations}
+    \begin{align}
+        \hat{\phi}(f)\equiv\int_\m\dd^4x\sqrt{-g}\phi(x)f(x).
+    \end{align}
+\end{subequations}
+
+Note que é possível escrevê-lo a partir dos operadores de aniquilação e criação expandindo o campo nos modos
+\begin{subequations}
+    \begin{align}
+        \hat{\phi}(f)&=\sum_j\left[\int_\m\dd^4x\sqrt{-g}u_jf(x)a(u_j^*)+\int_\m\dd^4x\sqrt{-g}u_j^*f(x)a^{\dagger}(u_j)\right]\\
+        &=\sum_j\left[-i\innerkg{u_j^*}{Ef}a(u_j^*)-i\innerkg{u_j}{Ef}a^\dagger(u_j)\right]\\
+        &=ia\left(-i\sum_j\innerkg{u_j^*}{Ef}u^*_j\right)-ia^\dagger\left(\sum_j\innerkg{u_j}{Ef}u_j\right)\\
+        &=ia\left(\overline{K}Ef\right)-a^\dagger\left(KEf\right),
+    \end{align}
+\end{subequations}
+onde na segunda linha usamos a propriedade da \cref{eq:int-inner} para trocar as integrais espaciais por produtos internos e, a partir da linearidade dos operadores, identificamos a parte de frequência positiva e negativa do modo \(Ef\). Denotando \(\overline{K}Ef\) por \(KEf^*\) temos,
+\begin{equation}
+    \hat{\phi}(f)=ia\left(KEf^*\right)-ia^\dagger\left(KEf\right).
+\end{equation}
+
+\subsection*{Relações de comutação}
+Seja \(f,g\in C_0^{infty}(\m)\), 
+
+
+\section{Efeito Unruh}
 
 \section{Radiação por uma carga acelerada}
 
