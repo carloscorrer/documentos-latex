@@ -15,8 +15,8 @@
  a4paper,
  tmargin=3.3cm,
  bmargin=4.2cm,
- lmargin=2.4cm,
- rmargin=2.4cm,
+ lmargin=3cm,
+ rmargin=3cm,
 ]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{inputenc}
@@ -208,11 +208,81 @@ onde na segunda linha usamos a propriedade da \cref{eq:int-inner} para trocar as
 \end{equation}
 
 \subsection*{Relações de comutação}
-Seja \(f,g\in C_0^{infty}(\m)\), 
+Seja \(f,g\in C_0^{\infty}(\m)\), então
+\begin{subequations}
+    \begin{align}
+        \relax\left[\hat{\phi}(f),\hat{\phi}(g)\right]&=\left[ia\left(KEf^*\right)-ia^\dagger\left(KEf\right),ia\left(KEg^*\right)-ia^\dagger\left(KEg\right)\right]\\
+        &=\left[a\left(KEf^*\right),a^\dagger\left(KEg\right)\right]-\left[a\left(KEg^*\right),a^\dagger\left(KEf\right)\right]\\
+        &=\innerkg{KEf}{KEg}-\innerkg{KEg}{KEf}\\
+        &=\innerkg{KEf}{KEg}-\innerkg{KEf}{KEg}^*.
+    \end{align}
+    \label{eq:comuta}
+\end{subequations}
+
+Agora, note que podemos usar da forma simplética do espaço para escrever
+\begin{subequations}
+    \begin{align}
+        \innerkg{KEf^*}{KEg^*}&=-i\Omega(KEf,KEg^*)\\
+        &=i\Omega(KEg^*,KEf)\\
+        &=-\innerkg{KEg}{KEf}\\
+        &=-\innerkg{KEf}{KEg}^*.
+    \end{align}
+\end{subequations}
+
+Portanto, definimos
+\begin{subequations}
+    \begin{align}
+        -iE(f,g)&\equiv\innerkg{Ef}{Eg}\\
+        &=\innerkg{KEf+KEf^*}{KEg+KEg^*}\\
+        &=\innerkg{KEf}{KEg}+\innerkg{KEf^*,KEg^*}\\
+        &=\innerkg{KEf}{KEg}-\innerkg{KEf}{KEg}^*,
+        \label{eq:def-E}
+    \end{align}
+\end{subequations}
+de modo que, comparando com a \cref{eq:comuta}, temos as relações de comutação para os campos dadas por
+\begin{equation}
+    \relax\left[\hat{\phi}(f),\hat{\phi}(g)\right]=-E(f,g).
+\end{equation}
 
 
 \section{Efeito Unruh}
+\subsection*{Espaços-tempos estacionários}
+Uma das consequências paradigmáticas da teoria quântica de campos em espaços-tempos curvos é que arbitrariedade da escolha do espaço \(\h\) de 1-partícula, leva a conclusão que o conceito de partícula não é covariante. Na realidade, este conceito só faz sentido quando associado a um campo de Killing, isto é, a alguma simetria do espaço em questão.
 
+Dado um espaço-tempo \((\m,g_{ab})\) globalmente hiperbólico e estacionário, isto é, que admite um campo de Killing tipo-tempo \(\xi\) com grupo de órbitas \(\phi_\xi^t:\mathbb{R}\to\m\), temos uma escolha natural de quantização. O espaço de Hilbert \(\h\) \enquote*{preferencial} é aquele cujas soluções são de frequência positiva com respeito ao tempo de Killing \(t\), uma função que satisfaz
+\begin{equation}
+    \xi^a\nabla_at=1.
+\end{equation}
+A saber, estudando a resposta de um detector de dois-níveis seguindo as órbitas do campo de Killing, chegamos a conclusão de que suas excitações e desexcitações estão associadas com a absroção e emissão da definição natural de partícula. Esse resultado é motivador para a interpretação dada nesse tipo de espaço-tempo.
+\subsection*{Campos de Killing no espaço de Minkowski}
+O alto grau de simetria do espaço-tempo de Minkowski, descrito pela métrica,
+\begin{equation}
+    \dd s^2=-\dd t^2+\dd x^2+\dd y^2+\dd z^2,
+\end{equation}
+carrega consigo diversos campos de Killing. Considere os seguintes,
+\begin{equation}
+    \xi^a=\left(\partial_t\right)^a\hspace{1cm}\text{e}\hspace{1cm}\chi^a=a\left[x\left(\partial_t\right)^a+t\left(\partial_x\right)^a\right].
+\end{equation}
+O primeiro, tem suas órbitas associadas com translação temporal e imediatamente segue que um observador com 4-velocidade dada por \(\xi^a\) tem 4-aceleração nula, logo correspondem a observadores inerciais. Agora, se um observador tem 4-velocidade dada por \(\chi^a\) normalizado, ou seja, \(u^a=\chi^a/B^2\) onde \(B^2=-\chi^a\chi_a=a^2(x^2-t^2)\), sua 4-aceleração é
+\begin{subequations}
+    \begin{align}
+        A^a&=\frac{1}{B^2}\chi^b\nabla_b\chi^a=-\frac{1}{B^2}\chi_b\nabla^a\chi^b=-\frac{1}{2B^2}\nabla^a\left(\chi^b\chi_b\right)\\
+        &=\frac{1}{2B^2}\nabla^aB^2=\nabla^a\ln{B}.
+    \end{align}
+\end{subequations}
+Portanto, a sua magnitude é
+\begin{equation}
+    A=\left(A^aA_a\right)^{\frac{1}{2}}=(x^2-t^2)^{-\frac{1}{2}}=\frac{a}{B},
+\end{equation}
+ou seja, esses observadores estão uniformemente acelerados. Além disso, note que o campo \(\chi^a\) divide o espaço-tempo em 4 regiões delimitadas pelas superfícies em que ele se anula, \(\mathfrak{h}_A\) e \(\mathfrak{h}_B\):
+\begin{equation}
+    \begin{aligned}
+        &\text{Região I}=I^-\left(\mathfrak{h}_A\right)\cap I^+\left(\mathfrak{h}_B\right)\hspace{2cm}\text{Região II}=I^+\left(\mathfrak{h}_A\right)\cap I^-\left(\mathfrak{h}_B\right)\\
+        &\text{Região III}=J^-(S)\hspace{3.75cm}\text{Região IV}=J^+(S)
+    \end{aligned}
+\end{equation}
+
+Na
 \section{Radiação por uma carga acelerada}
 
 \end{document}
