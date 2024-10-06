@@ -8,7 +8,7 @@
 %matemáticas
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
 \usepackage[ISO]{diffcoeff}
-\usepackage{braket,esint}
+\usepackage{braket,esint,siunitx}
 
 %formatação
 \usepackage[
@@ -44,6 +44,17 @@ urlcolor = black
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\innerkg}[2]{\langle#1,#2\rangle_{\text{KG}}}
 \newcommand{\h}{\mathcal{H}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\xq}{\mathbf{x}_q}
+\newcommand{\tr}{t_{\text{ret}}}
+\newcommand{\n}{\mathbf{n}}
+\newcommand{\er}{\hat{\mathbf{e}}_r}
+\newcommand{\Ttot}{T_{\text{tot}}}
+\newcommand{\xperp}{\mathbf{x}_{\perp}}
+\newcommand{\supp}[1]{\text{supp}\;#1}
+\newcommand{\wu}[1]{w^1_{#1\mathbf{k}_\perp}}
+\newcommand{\wv}[1]{w^2_{#1\mathbf{k}_\perp}}
+\newcommand{\wsig}[1]{w^{\sigma}_{#1\mathbf{k}_\perp}}
 
 \title{Radiação, Aceleração e o Efeito Unruh}
 \author{Carlos H. Correr da Silva\orcidlink{0000-0002-3598-4412}}
@@ -95,9 +106,13 @@ Um campo escalar (spin-0) e massa \(m\) nesse espaço-tempo satisfaz a equação
 \end{equation}
 em que \(\nabla^a\) é a derivada covariante compatível com a métrica. O momento conjugado ao campo é dado por
 \begin{equation}
-    \pi=n^a\nabla_a\phi.
+    \pi=n^a\nabla_a\phi,
 \end{equation}
-Assim, dada a hierbolicidade global do campo, uma solução da equação de Klein-Gordon está unicamente definido dadas condições iniciais, isto é, funções suaves numa superfície de Cauchy para o valor do campo e seu momento.
+e, consequentemente, tensor de energia-momento
+\begin{equation}
+    T_{ab}=\nabla_a\phi\nabla_b\phi-\frac{1}{2}g_{ab}\nabla^c\phi\nabla_c\phi.
+\end{equation}
+Assim, dada a hiperbolicidade global do campo, uma solução da equação de Klein-Gordon está unicamente definido dadas condições iniciais, isto é, funções suaves numa superfície de Cauchy para o valor do campo e seu momento.
 Agora, dadas duas soluções \(\phi_1\) e \(\phi_2\) da \cref{eq:kg}, definimos a forma simplética
 \begin{equation}
     \Omega(\phi_1,\phi_2)\equiv\int_{\Sigma_t}\dd^3x\sqrt{h}\left(\phi_2n^a\nabla_a\phi_1-\phi_1n^a\nabla_a\phi_2\right),
@@ -121,9 +136,9 @@ Agora, basta tomar um subconjunto \(\h\subset\s^{\mathbb{C}}\) que satisfaça as
     \item Para todo \(f_1\in\h\) e \(f_2\in\overline{\h}\) temos \(\innerkg{f_1}{f_2}=0\).
 \end{enumerate}
 
-Nessa construção, \(\h\) é o espaço de \enquote{1-partícula}\footnote{A seguir veremos que o conceito de partícula é delicado no contexto de TQCEC}, portanto, o espaço de estados será dado pelo espaço de Fock \(\mathcal{F}(\h)\) associado à escolha de \(\h\).
+Nessa construção, \(\h\) é o espaço de \enquote{1-partícula}\footnote{A seguir veremos que o conceito de partícula é delicado no contexto de TQCEC}, portanto, o espaço de estados será dado pelo espaço de Fock simétrico \(\mathcal{F}_s(\h)\) associado à escolha de \(\h\).
 
-É possível definir naturalmente operadores de aniquilação e de criação, \(a(\xi^*)\) e \(a^\dagger(\xi)\) no espaço de Fock simétrico, em que \(\xi\in\h\) representa o modo que está sendo criado ou aniquilado. Além disso, diramente da definição, obtemos as relações de comutação
+É possível definir naturalmente operadores de aniquilação e de criação, \(a(\xi^*)\) e \(a^\dagger(\xi)\) no espaço de Fock, em que \(\xi\in\h\) representa o modo que está sendo criado ou aniquilado. Além disso, diretamente da definição, obtemos as relações de comutação
 \begin{subequations}
     \begin{align}
         &\relax\left[a(\xi^*),a^{\dagger}(\eta)\right]=\innerkg{\xi}{\eta}\mathbb{1},\\
@@ -179,7 +194,7 @@ De fato esta é uma solução homogênea, dado que
     \end{align}
 \end{subequations}
 
-Essa solução é extramemente útil pois goza da propriedade que dada um solução qualquer \(\varphi\) da \cref{eq:kg}, o produto interno desta com \(Ef\) pode ser escrito como uma integral no espaço-tempo,
+Essa solução é extremamente útil pois goza da propriedade que dada um solução qualquer \(\varphi\) da \cref{eq:kg}, o produto interno desta com \(Ef\) pode ser escrito como uma integral no espaço-tempo,
 \begin{equation}
     -i\innerkg{\varphi}{Ej}=\int_\m\dd^4xf(x)\varphi^*(x).
     \label{eq:int-inner}
@@ -196,46 +211,38 @@ Agora, definimos o operador campo associado a uma função \(f\) como
 Note que é possível escrevê-lo a partir dos operadores de aniquilação e criação expandindo o campo nos modos
 \begin{subequations}
     \begin{align}
-        \hat{\phi}(f)&=\sum_j\left[\int_\m\dd^4x\sqrt{-g}u_jf(x)a(u_j^*)+\int_\m\dd^4x\sqrt{-g}u_j^*f(x)a^{\dagger}(u_j)\right]\\
-        &=\sum_j\left[-i\innerkg{u_j^*}{Ef}a(u_j^*)-i\innerkg{u_j}{Ef}a^\dagger(u_j)\right]\\
-        &=ia\left(-i\sum_j\innerkg{u_j^*}{Ef}u^*_j\right)-ia^\dagger\left(\sum_j\innerkg{u_j}{Ef}u_j\right)\\
-        &=ia\left(\overline{K}Ef\right)-a^\dagger\left(KEf\right),
+        \hat{\phi}(f)&=\sum_j\left[\int_\m\dd^4x\sqrt{-g}u_jf(x)\hat{a}(u_j^*)+\int_\m\dd^4x\sqrt{-g}u_j^*f(x)\hat{a}^{\dagger}(u_j)\right]\\
+        &=\sum_j\left[-i\innerkg{u_j^*}{Ef}\hat{a}(u_j^*)-i\innerkg{u_j}{Ef}\hat{a}^\dagger(u_j)\right]\\
+        &=i\hat{a}\left(-i\sum_j\innerkg{u_j^*}{Ef}u^*_j\right)-i\hat{a}^\dagger\left(\sum_j\innerkg{u_j}{Ef}u_j\right)\\
+        &=i\hat{a}\left(\overline{K}Ef\right)-i\hat{a}^\dagger\left(KEf\right),
     \end{align}
 \end{subequations}
 onde na segunda linha usamos a propriedade da \cref{eq:int-inner} para trocar as integrais espaciais por produtos internos e, a partir da linearidade dos operadores, identificamos a parte de frequência positiva e negativa do modo \(Ef\). Denotando \(\overline{K}Ef\) por \(KEf^*\) temos,
 \begin{equation}
-    \hat{\phi}(f)=ia\left(KEf^*\right)-ia^\dagger\left(KEf\right).
+    \hat{\phi}(f)=i\hat{a}\left(KEf^*\right)-i\hat{a}^\dagger\left(KEf\right).
+    \label{eq:campo}
 \end{equation}
 
 \subsection*{Relações de comutação}
 Seja \(f,g\in C_0^{\infty}(\m)\), então
 \begin{subequations}
     \begin{align}
-        \relax\left[\hat{\phi}(f),\hat{\phi}(g)\right]&=\left[ia\left(KEf^*\right)-ia^\dagger\left(KEf\right),ia\left(KEg^*\right)-ia^\dagger\left(KEg\right)\right]\\
-        &=\left[a\left(KEf^*\right),a^\dagger\left(KEg\right)\right]-\left[a\left(KEg^*\right),a^\dagger\left(KEf\right)\right]\\
-        &=\innerkg{KEf}{KEg}-\innerkg{KEg}{KEf}\\
+        \relax\left[\hat{\phi}(f),\hat{\phi}(g)\right]&=\left[\hat{a}\left(KEf^*\right),\hat{a}^\dagger\left(KEg\right)\right]-\left[\hat{a}\left(KEg^*\right),\hat{a}^\dagger\left(KEf\right)\right]\\
         &=\innerkg{KEf}{KEg}-\innerkg{KEf}{KEg}^*.
     \end{align}
     \label{eq:comuta}
 \end{subequations}
 
 Agora, note que podemos usar da forma simplética do espaço para escrever
-\begin{subequations}
-    \begin{align}
-        \innerkg{KEf^*}{KEg^*}&=-i\Omega(KEf,KEg^*)\\
-        &=i\Omega(KEg^*,KEf)\\
-        &=-\innerkg{KEg}{KEf}\\
-        &=-\innerkg{KEf}{KEg}^*.
-    \end{align}
-\end{subequations}
+\begin{equation}
+    \innerkg{KEf^*}{KEg^*}=-\innerkg{KEf}{KEg}^*.
+\end{equation}
 
-Portanto, definimos
+Portanto, usando que \(Ef=KEf+KEf^*\), definimos
 \begin{subequations}
     \begin{align}
         -iE(f,g)&\equiv\innerkg{Ef}{Eg}\\
-        &=\innerkg{KEf+KEf^*}{KEg+KEg^*}\\
-        &=\innerkg{KEf}{KEg}+\innerkg{KEf^*,KEg^*}\\
-        &=\innerkg{KEf}{KEg}-\innerkg{KEf}{KEg}^*,
+        &=\innerkg{KEf}{KEg}-\innerkg{KEf}{KEg^*},
         \label{eq:def-E}
     \end{align}
 \end{subequations}
@@ -274,15 +281,334 @@ Portanto, a sua magnitude é
 \begin{equation}
     A=\left(A^aA_a\right)^{\frac{1}{2}}=(x^2-t^2)^{-\frac{1}{2}}=\frac{a}{B},
 \end{equation}
-ou seja, esses observadores estão uniformemente acelerados. Além disso, note que o campo \(\chi^a\) divide o espaço-tempo em 4 regiões delimitadas pelas superfícies em que ele se anula, \(\mathfrak{h}_A\) e \(\mathfrak{h}_B\):
+ou seja, esses observadores estão uniformemente acelerados. 
+
+Além disso, note que o campo \(\chi^a\) divide o espaço-tempo em 4 regiões delimitadas pelas superfícies em que ele se anula, \(\mathfrak{h}_A\) e \(\mathfrak{h}_B\) (que determinam também um horizonte para os observadores acelerados):
 \begin{equation}
     \begin{aligned}
         &\text{Região I}=I^-\left(\mathfrak{h}_A\right)\cap I^+\left(\mathfrak{h}_B\right)\hspace{2cm}\text{Região II}=I^+\left(\mathfrak{h}_A\right)\cap I^-\left(\mathfrak{h}_B\right)\\
-        &\text{Região III}=J^-(S)\hspace{3.75cm}\text{Região IV}=J^+(S)
+        &\text{Região III}=J^+(S)\hspace{3.75cm}\text{Região IV}=J^-(S)
     \end{aligned}
 \end{equation}
 
-Na
-\section{Radiação por uma carga acelerada}
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
 
+    % Draw the axes
+    \draw[-] (-4,0) -- (4,0);
+    \draw (0,0.5) node[above]{S};
+
+    % Draw the lines for the Rindler wedges (extended)
+    \draw[thick] (0,0) -- (3,3) node[right]{\(\mathfrak{h}_A\)};
+    \draw[thick] (0,0) -- (3,-3);
+    \draw[thick] (0,0) -- (-3,3) node[left]{\(\mathfrak{h}_B\)};
+    \draw[thick] (0,0) -- (-3,-3);
+    
+    % Label the regions
+    \node at (3,1) {Região I};
+    \node at (-3,1) {Região II};
+    \node at (0,-2) {Região IV};
+    \node at (0,2) {Região III};
+
+\end{tikzpicture}
+    \caption{Quadrantes de Rindler}
+    \label{fig:wedges}
+\end{figure}
+
+Agora, é conveniente definir os tempos (inerciais) retardado, \(u=t-x\), e avançado, \(v=t+x\). Estudando o tempos de Killing induzidos por \(\chi^a\) em \(\mathfrak{h}_A\), \(V\;(\chi^a\nabla_aV=1)\), e em \(\mathfrak{h}_B\), \(U\;(\chi^a\nabla_aU=1)\), temos a relação
+\begin{equation}
+    V=\frac{1}{a}\ln{\lvert v\rvert}\hspace{1cm}\text{e}\hspace{1cm}U=\frac{1}{a}\ln{\lvert u\rvert}.
+\end{equation}
+
+Além disso, tomando as transformadas de Fourier de modos de frequência positiva com relação ao tempo inercial retardado (avançado) em \(\mathfrak{h}_A\;(\mathfrak{h}_B)\), concluímos que estes também são de frequência positiva com respeito ao tempo inercial \(t\).
+
+\subsection*{Banho térmico de Unruh}
+Agora, aplicamos a quantização baseada na simetria do campo de Killing tanto para \(\xi^a\) quanto para \(\chi^a\). Para o primeiro, a construção é a usual e denotamos seu espaço de Hilbert por \(\h_1\) e seu estado de vácuo por \(\ket{0_M}\). 
+
+No caso de \(\chi^a\), note que ele é tipo-tempo apenas nas regiões I e II, porém ambas as regiões são espaços-tempos globalmente hiperbólicos por si só. Portanto, aplicamos a quantização em cada uma delas e o espaço de Hilbert de uma partícula será o produto tensorial dos dois, isto é, \(\h_2=\h_I\otimes\h_{II}\). Denotaremos o vácuo dessa construção por \(\ket{0}_R\).
+
+Seja \(\{\psi_i^I\}\) e \(\{\psi_i^{II}\}\) bases das soluções nas regiões I e II respectivamente, em que o índice \(i\) rotula a frequência \(\omega_i\) dos modos. Analisando modos de frequência positiva no horizonte e notando que a operação de reflexão, \((t,x,y,z)\to(-t,-x,y,z)\) mapeia \(\h_I\) em \(\overline{\h}_{II}\), podemos escrever elementos de \(\h_1\) na base de \(\h_2\),
+\begin{subequations}
+    \begin{align}
+        \Psi_i&=\psi_i^I+e^{-\frac{\pi\omega_i}{a}}\left(\psi_i^{II}\right)^*\\
+        \Psi'_i&=\psi_i^{II}+e^{-\frac{\pi\omega_i}{a}}\left(\psi_i^{I}\right)^*.
+    \end{align}
+\end{subequations}
+
+Isto é justamente o que é necessário para computar a matriz-\(S\)\footnote{Também chamada de Transformação de Bogoliubov.} que relaciona as diferentes construções. Assim, os observadores que seguem as órbitas de \(\chi^a\) interpretam o vácuo de Minkowski como
+\begin{equation}
+    \hat{S}\ket{0}_M=\prod_j\left(\sum_{n=0}^{\infty}e^{-\frac{\pi n\omega_j}{a}}\ket{n_j}_I\otimes\ket{n_j}_{II}\right),
+\end{equation}
+em que \(\ket{n_j}_I\) representa um estado com \(n\) partículas no modo \(\psi_j^I\) da região I e o mesmo segue para a região II. Como observadores acelerados estão restritos a região I, tomamos o traço parcial da matriz de densidade correspondente ao estado acima e obtemos
+\begin{equation}
+    \rho^I=\prod_j\left(\sum_{n=0}^{\infty}e^{-\frac{2n\omega_j}{\pi}\ket{n_j}_I\bra{n_j}_I}\right).
+\end{equation}
+
+Esse resultado é compatível com a afirmação de que observadores acelerados interpretam o vácuo de Minkowski como um banho térmico de partículas a temperatura
+\begin{equation}
+    T=\frac{a}{2\pi}\cong\frac{a}{10^{19}\unit{\meter/\second}}\unit{\kelvin}.
+\end{equation}
+
+\section{Radiação por uma carga acelerada}\label{sec:eletro}
+\subsection*{Solução das equações de Maxwell}
+Considere o espaço-tempo de Minkowski \((\mathbb{R}^4,\eta_{ab})\). Para encontrar a radiação emitida por uma carga acelerada, desejamos obter a solução das equações de Maxwell com fontes
+\begin{subequations}
+    \begin{align}
+        &\rho(t,\x)=q\delta(\x-\xq(t))\\
+        &\mathbf{J}(t,\x)=\diff{\xq}{t}(t)q\delta(\x-\xq(t)),
+    \end{align}
+\end{subequations}
+em que \(q\) é a carga da partícula e \(\xq(t)\) é a linha de mundo dela.
+
+Escolhendo o Gauge de Lorenz, escrevemos os potenciais a partir da solução retardada,
+\begin{subequations}
+    \begin{align}
+        &\phi(t,\x)=q\frac{\mu_0}{4\pi}\int\dd^3x'\frac{\delta(\x'-\xq(\tr))}{\lvert\x-\x'\rvert}\\
+        &\mathbf{A}(t,\x)=q\frac{\mu_0}{4\pi}\int\dd^3x'\diff{\xq}{t}(\tr)\frac{\delta(\x'-\xq(\tr))}{\lvert\x-\x'\rvert},
+    \end{align}
+\end{subequations}
+em que
+\begin{equation}
+    \tr=t-\lvert\x-\x'\rvert.
+\end{equation}
+
+Para avaliar as integrais, note que, para um função vetorial \(\mathbf{f}(\x)\) e uma função escalar \(g(\x)\), vale 
+\begin{equation}
+    \int\dd^3xg(\x)\delta(\mathbf{f}(\x))=\frac{g}{\lvert\mathcal{J}\rvert}\bigg\vert_{\mathbf{f}(\x)=0},
+\end{equation}
+onde \(\mathcal{J}\) é o determinante da matriz jacobiana
+\begin{equation}
+    \mathcal{J}^i_j=\diffp{f^i}{x^j}.
+\end{equation}
+Este resultado segue de uma transformação do tipo \(\mathbf{y}=\mathbf{f}(\x)\). Para o nosso caso de interesse,
+\begin{equation}
+    \mathcal{J}=1-\left(\frac{\x-\x'}{\lvert\x-\x'\rvert}\right)\cdot\diff{\xq}{t}(\tr).
+\end{equation}
+Agora, resolvendo as integrais dos potenciais, obtemos
+\begin{subequations}
+    \begin{align}
+        &\phi(t,\x)=\frac{\mu_0}{4\pi}\frac{1}{\alpha}\frac{q}{\lvert\x-\xq(\tr)\rvert}\\
+        &\mathbf{A}(t,\x)=\diff{\xq}{t}(\tr)\phi(t,\x),
+    \end{align}
+\end{subequations}
+com
+\begin{equation}
+    \alpha=1-\hat{\mathbf{n}}\cdot\diff{\xq}{t}(\tr)\hspace{1cm}\text{e}\hspace{1cm}\hat{\mathbf{n}}=\frac{\x-\xq(\tr)}{\lvert\x-\xq(\tr)\rvert}.
+\end{equation}
+Esses são os conhecidos potenciais de Liènard-Wiechert para cargas pontuais. Calculando os campos como prescrito para o Gauge de Lorenz, notando que \(\tr\) é função de \(t\) e \(\x\), temos
+\begin{subequations}
+    \begin{align}
+        &\mathbf{E}(t,\x)=q\frac{\mu_0}{4\pi\alpha^3}\left[\frac{\left(1-\big\lvert\diff{\xq}{t}\big\rvert^2\right)\left(\hat{\mathbf{n}}-\diff{\xq}{t}\right)}{\lvert\x-\xq\rvert^2}+\frac{\hat{\n}\times\left[\left(\hat{\n}-\diff{\xq}{t}\right)\times\diff[2]{\xq}{t}\right]}{\lvert\x-\xq\rvert}\right]\Bigg\rvert_{t=\tr}\\
+        &\mathbf{B}(t,\x)=\hat{\n}\times\mathbf{E}(t,\x).
+    \end{align}
+    \label{eq:campos}
+\end{subequations}
+
+\subsection*{Potência irradiada}
+A potência irradiada para o infinito por unidade de ângulo sólido é definida como
+\begin{equation}
+    \diff{P}{\Omega}=\lim_{\lvert\x\rvert\to\infty}\lvert\x\rvert^2\mathbf{S}\cdot\er,
+\end{equation}
+em que \(\mathbf{S}\) é o vetor de Poynting e \(\er=\x/\lvert\x\rvert\). Olhando para a \cref{eq:campos}, apenas o segundo termo contribui para a radiação emitida devido ao expoente no denominador, já que o primeiro caí rápido o suficiente no infinito. Assim, temos
+\begin{equation}
+    \diff{P}{\Omega}=\frac{q^2\mu_0}{16\pi^2\alpha^6}\left\lvert\er\times\left[\left(\er-\diff{\xq}{t}\right)\times\diff[2]{\xq}{t}\right]\right\rvert.
+\end{equation}
+
+No entanto, como a expressão é naturalmente avaliada em esferas com tempo retardado constante, é conveniente definir a potência irradiada por unidade de tempo retardado, isto é,
+\begin{equation}
+    \diff{P'}{\Omega}\equiv\diff{P}{\Omega}\diff{t}{\tr}=\frac{q^2\mu_0}{16\pi^2\alpha^5}\left\lvert\er\times\left[\left(\er-\diff{\xq}{t}\right)\times\diff[2]{\xq}{t}\right]\right\rvert.
+\end{equation}
+
+Considere o caso em que a partícula está instantaneamente em repouso, \(\diff{\xq}{t}=0\) e \(\alpha=1\), temos
+\begin{equation}
+    \diff{P}{t}=\frac{q^2\mu_0}{16\pi^2}\left[\left\lvert\diff[2]{\xq}{t}\right\rvert^2-\left(\er\cdot\diff[2]{\xq}{t}\right)^2\right].
+\end{equation}
+Integrando sobre as variáveis angulares para obter a radiação total emitida num instante de tempo,
+\begin{equation}
+    P_0=\int\diff{P}{\Omega}\dd\Omega=\frac{q^2\mu_0}{6\pi}\left\lvert\diff[2]{\xq}{t}\right\rvert^2=\frac{q^2\mu_0}{6\pi}a^\mu a_\mu,
+\end{equation}
+em que \(a^\mu\) é a 4-aceleração da partícula. Essa é a famosa fórmula de Larmor para radiação emitida por uma carga acelerada. Perceba que essa expressão é idêntica para a radiação emitida por tempo retardado no referencial de repouso da carga. Como tanto o 4-momento (energia) quanto o tempo recebem um fator \(\gamma\) quando transformado entre referenciais, a potência por tempo retardado é dada por
+\begin{equation}
+    P'=\frac{q^2\mu_0}{6\pi}a^\mu a_\mu,
+\end{equation}
+independente do estado de movimento da partícula.
+
+\section{Conexão entre radiação e o efeito Unruh}
+Um tratamento cuidadoso da radiação emitida por uma carga acelerada mostra que esse conceito não é covariante\cite{boulware}, isto é, um observador acelerado junto com a carga não detecta radiação emitida por ela. No entanto, no contexto de TQCEC, entendemos que esse observador explica a emissão desses fótons (inerciais) como absorção e emissão de fótons de Rindler (do banho térmico de Unruh), especialmente dos fótons de energia nula. Desejamos mostrar essa equivalência a seguir para um carga escalar\footnote{Algumas expressões diferem das encontradas na \cref{sec:eletro} devido a característica escalar do campo, portanto comparamos com o a Ref\cite{ren}.}.
+
+\subsection*{Análise clássica}
+Considere uma fonte escalar \(j\) (com carga \(q\)) uniformemente acelerada que interage com um campo escalar clássico \(\phi\) por um tempo próprio \(\Ttot=2T\) no espaço-tempo de Minkowski \((\mathbb{R}^4,\eta_{ab})\). A fonte escalar é dada por
+\begin{equation}
+    j(\x)=
+    \begin{cases}
+        q\delta(\xi)\delta^2(\xperp),\;-T<\tau<T\\
+        0,\;\;\lvert\tau\rvert>T
+    \end{cases}
+\end{equation}
+em que \(\tau\) é o tempo próprio da partícula. Nas coordenadas de Rindler, \((\tau,\xi,\xperp)\), com \(\xperp=(x,y)\in\mathbb{R}^2\), que cobre o quadrante de Rindler da direita (região \(z>\lvert t\rvert\)), o elemento de linha é
+\begin{equation}
+    \dd s^2=e^{2a\xi}(-\dd\tau^2+\dd\xi^2)+\dd x^2+\dd y^2.
+\end{equation}
+Além disso, nessas coordenadas a linha de mundo da carga uniformemente acelerada é dada por \(\xi=x=y=0\).
+
+O acoplamento da fonte com o campo escalar leva a equação de Klein-Gordon não homogênea,
+\begin{equation}
+    \nabla^a\nabla_a\phi=j,
+\end{equation}
+que tem solução retardada denotada por \(Rj\). Tomando uma superfície de Cauchy \(\Sigma\subset\mathbb{R}^4-J^-(\supp{j})\), então nessa superfície, temos
+\begin{equation}
+    Rj=-(Aj-Ej)=-Ej,
+\end{equation}
+visto que a solução avançada é nula fora do passado do suporte de \(j\).
+
+Para analisar a radiação emitida no futuro assintótico, decompomos a solução retardada nos modos de Unruh \(\{\wu{\omega},\wv{\omega}\}\), em que \(\omega\in\mathbb{R}^+\) e \(\mathbf{k}_\perp\in\mathbb{R}^2\) são a frequência e momento dos modos de Rindler, associado com os observadores acelerados. No entanto, os modos de Unruh, assim como os usados na dedução do efeito Unruh, tem frequência positiva com respeito ao observadores inerciais. A expressão desses modos é
+\begin{subequations}
+    \begin{align}
+        &\wu{\omega}=\frac{v^R_{\omega\mathbf{k}_\perp}+e^{-\pi\omega/a}v^{L*}_{\omega-\mathbf{k}_\perp}}{\sqrt{1-e^{-2\pi\omega/a}}}
+        &\wv{\omega}=\frac{v^L_{\omega\mathbf{k}_\perp}+e^{-\pi\omega/a}v^{R*}_{\omega-\mathbf{k}_\perp}}{\sqrt{1-e^{-2\pi\omega/a}}},
+    \end{align}
+\end{subequations}
+em que \(v^R_{\omega\mathbf{k}_\perp}\) e \(v^L_{\omega\mathbf{k}_\perp}\) representam os modos de Rindler nos quadrantes da direita e esquerda respectivamente e tem a forma
+\begin{equation}
+    v^R_{\omega\mathbf{k}_\perp}=e^{-i\omega\tau}F_{\omega\mathbf{k}_\perp}(\xi,\xperp),
+\end{equation}
+com
+\begin{equation}
+    F_{\omega\mathbf{k}_\perp}(\xi,\xperp)=\left[\frac{\sinh{\pi\omega/a}}{4\pi^4a}\right]^{1/2}K_{i\omega/a}\left(\frac{k_\perp}{a}e^{a\xi}\right)e^{i\mathbf{k}_\perp\cdot\xperp},
+\end{equation}
+em que \(K_\nu(x)\) é a função de Bessel modificada de ordem \(\nu\).
+
+Lembrando que \(\nabla^a\nabla_aRj=0\) fora de \(\supp{j}\) e fazendo a expansão explicitamente em \(\Sigma\) em termo dos modos de Unruh, temos
+\begin{equation}
+    Rj=-\sum_{\sigma=1}^2\int_0^{\infty}\dd\omega\int\dd^2\mathbf{k}_\perp\innerkg{\wsig{\omega}}{Ej}\wsig{\omega}+\text{c.c.}
+\end{equation}
+
+Invocando a \cref{eq:int-inner} para calcular os coeficientes da expansão e tomando o limite em que a carga acelera por um tempo próprio infinito \((T\to\infty)\), obtemos
+\begin{equation}
+    \innerkg{\wsig{\omega}}{Ej}=\frac{iqK_0(k_\perp/a)}{\sqrt{2\pi^2a}}\delta(\omega),\;\sigma=1,2.
+\end{equation}
+
+Agora, usando a propriedade que \(\wu{-\omega}=\wv{\omega}\) para calcular a solução retardada,
+\begin{equation}
+    Rj=-\frac{iq}{\sqrt{2\pi^2a}}\int\dd^2\mathbf{k}_\perp K_0(k_\perp/a)\wv{0}+\text{c.c.}
+\end{equation}
+
+Analisando a expressão acima é evidente que apenas os modos de Unruh de energia nula contribuem para a construção da solução retardada como vista por observadores inerciais no futuro assintótico. Agora, como não é possível medir a radiação na cunha da direita\cite{boulware}, performando o cálculo explícito no quadrante futuro \((t>\lvert z\rvert)\) usando coordenadas polares, obtemos
+\begin{equation}
+    Rj=\frac{-q}{4\pi\rho_0(x)},
+\end{equation}
+em que \(\rho(x)\equiv a/2\sqrt{(-x^\mu x_\mu+a^{-2})^2+4(t^2-z^2)/a^2}\). Esse é justamente o resultado usual da eletrodinâmica (escalar)\cite{ren}.
+
+Para finalizar a analise clássica, podemos definir um número clássico de particulas irradiadas (como visto por observadores inerciais) como
+\begin{equation}
+    N_M\equiv\innerkg{KRj}{KRj},
+\end{equation}
+e usando a ortonormalidade dos modos de Unruh,
+\begin{equation}
+    \frac{N_M}{\Ttot}=\frac{q^2a}{4\pi^2},
+\end{equation}
+onde também foi usado \(\Ttot=2\pi\delta(\omega)\vert_{\omega=0}\) e 
+\begin{equation}
+    \int_0^{\infty}\dd x\;x\lvert K_0(x)\rvert=\frac{1}{2}.
+\end{equation}
+
+\subsection*{Análise quântica}
+Agora, a fonte está acoplada com um campo quântico
+\begin{equation}
+    \nabla^a\nabla_a\hat{\phi}=j,
+\end{equation}
+cuja solução pode ser escrita em termos das soluções retardada e avançada, ou seja,
+\begin{subequations}
+    \begin{align}
+        \hat{\phi}(t,\x)&=Rj(t,\x)\mathbb{1}+\hat{\phi}_{\text{in}}(t,\x)\\
+        &=Aj(t,\x)\mathbb{1}+\hat{\phi}_{\text{out}}(t,\x),
+    \end{align}
+\end{subequations}
+em que \(\hat{\phi}_{\text{in}},\hat{\phi}_{\text{out}}\) são soluções homogêneas da equação de Klein-Gordon. Assim, podemos expandir as soluções homogêneas numa base de soluções de frequência positiva e nos operadores de aniquilação e criação, por exemplo,
+\begin{equation}
+    \hat{\phi}_{\text{out}}(t,\x)=\sum_j\left[u_j(t,\x)\hat{a}_{\text{out}}(u_j^*)+u_j^*(t,\x)\hat{a}^{\dagger}(u_j)\right]
+\end{equation}
+No entanto, cada uma delas tem seu estado de vácuo associado, isto é, \(\ket{0_\text{in}}\) e \(\ket{0_{\text{out}}}\) (e consequentemente seus operadores de aniquilação e criação), o primeiro associado com observadores no passado assintótico e o segundo com observadores no futuro assintótico.
+
+Ambos os estados podem ser conectados pela matriz-\(S\) dada por
+\begin{equation}
+    \hat{S}=\exp{\left[-i\int\dd x^4\sqrt{-g}\hat{\phi}_{\text{out}}(x)j(x)\right]}.
+\end{equation}
+
+Portanto, preparando o campo no estado \(\ket{0_{\text{in}}}\), temos
+\begin{equation}
+    \ket{0_{\text{in}}}=\hat{S}\ket{0_{\text{out}}}.
+\end{equation}
+Perceba que podemos escrever a matriz-\(S\) como função do operador campo como definido na \cref{eq:campo},
+\begin{subequations}
+    \begin{align}
+        \hat{S}&=\exp[-i\hat{\phi}(j)]\\
+        &=\exp{\left[\hat{a}\left(KEj^*\right)-\hat{a}^{\dagger}\left(KEj\right)\right]}.
+    \end{align}
+\end{subequations}
+
+Usando a fórmula de Zassenhaus, 
+\begin{equation}
+    e^{A+B}=e^{A}e^{B}e^{-\frac{1}{2}[A,B]},
+\end{equation}
+quando \([A,B]\) é proporcional a identidade, com \(A=\hat{a}^{\dagger}\left(KEj\right)\) e \(B=\hat{a}\left(KEj^*\right)\), chegamos na relação entre os estados de vácuo in e out,
+\begin{equation}
+    \ket{0_{\text{in}}}=e^{-\frac{\lVert KEj\rVert^2}{2}}e^{-\hat{a}^{\dagger}\left(KEj\right)}\ket{0_{\text{out}}}.
+    \label{eq:coerente}
+\end{equation}
+Note que este é um estado coerente, ou seja, é autoestado de \(\hat{a}_{\text{out}}\left(w^{\sigma*}_{\omega\mathbf{k}_\perp}\right)\) com autovalor \(-\innerkg{\wsig{\omega}}{Ej}\).
+
+Com esse resultado e expandindo o campo nos modos de Unruh, 
+\begin{equation}
+    \hat{\phi}_{\text{out}}=\sum_{\sigma=1}^2\int_{0}^{\infty}\dd\omega\int\dd^2\mathbf{k}_\perp\left[\wsig{\omega}(x)\hat{a}_{\text{out}}\left(w^{\sigma*}_{\omega\mathbf{k}_\perp}\right)+w^{\sigma*}_{\omega\mathbf{k}_\perp}(x)\hat{a}^{\dagger}_{\text{out}}\left(\wsig{\omega}\right)\right],
+\end{equation}
+é imediato que o valor esperado do campo é
+\begin{equation}
+    \bra{0_{\text{in}}}\hat{\phi}_{\text{out}}\ket{0_\text{in}}=-\sum_{\sigma=1}^2\int_0^{\infty}\dd\omega\int\mathbf{k}_\perp\innerkg{\wsig{\omega}}{Ej}\wsig{\omega}+\text{c.c.},
+\end{equation}
+que é \(-Ej\). No entanto, em \(\Sigma\) (futuro assintótico), temos \(Rj=-Ej\), então
+\begin{equation}
+    \bra{0_{\text{in}}}\hat{\phi}_{\text{out}}\ket{0_\text{in}}=Rj,
+\end{equation}
+que é a solução clássica encontrada na análise anterior. Não somente o valor esperado do campo é construído com apenas modos de energia nula, mas o estado em si também o é. Isto pode ser verificado expandindo o operador de criação \(\hat{a}^\dagger(KEj)\) em modos de Unruh e aplicar na \cref{eq:coerente} tomando o limite \(T\to\infty\) que resulta em
+\begin{equation}
+    \ket{0_{\text{in}}}=\exp\left[-\Ttot q^2a/(4\pi^2)\right]\bigotimes_{\mathbf{k}_\perp}\exp\left[\frac{iqK_0(k_\perp/a)}{\sqrt{2\pi^2a}}a^{\dagger}_{\text{out}}\left(\wv{\omega}\right)\right].
+\end{equation}
+
+Esse resultado concorda com a afirmação de que cada partícula emitida no referencial inercial corresponde, no referencial acelerado, a emissão ou absorção de partículas de Rindler de energia nula.
+
+Para finalizar a análise, abusamos do fato do estado no futuro assintótico ser coerente para calcular o número esperado de partículas emitidas em cada modo de Unruh,
+\begin{equation}
+    \bra{0_{\text{in}}}\hat{N}^{\text{out}}_{\omega\mathbb{k}_\perp}\ket{0_\text{in}}=\lvert\innerkg{\wsig{\omega}}{Ej}\rvert^2,
+\end{equation}
+em que \(\hat{N}^{\text{out}}_{\omega\mathbf{k}_\perp}=\hat{a}^{\dagger}_{\text{out}}(\wsig{\omega})\hat{a}_{\text{out}}(w^{\omega*}_{\omega\mathbf{k}_\perp}\) é o operador número. Integrando sobre todos os modos, obtemos
+\begin{equation}
+    \frac{\bra{0_{\text{in}}}\hat{N}^{\text{out}}\ket{0_\text{in}}}{\Ttot}=\frac{q^2a}{4\pi^2},
+\end{equation}
+que concorda com o resultado clássico anterior. Por fim, calculando o valor médio para o tensor de energia-momento normalmente ordenado,
+\begin{equation}
+    :\hat{T}^{\text{out}}_{ab}:=\hat{T}^{\text{out}}_{ab}-\bra{0_\text{out}}\hat{T}^{\text{out}}_{ab}\ket{0_{\text{out}}},
+\end{equation}
+chegamos na expressão clássica
+\begin{equation}
+    \bra{0_{\text{in}}}:\hat{T}^{\text{out}}_{ab}:\ket{0_\text{in}}=\nabla_aRj\nabla_bRj-\frac{1}{2}\eta_{ab}\nabla^cRj\nabla_cRj.
+\end{equation}
+
+Particularmente, a fluxo de energia integrado numa esfera no futuro assintótico é
+\begin{equation}
+    \int\dd S^b \bra{0_{\text{in}}}:\hat{T}^{\text{out}}_{ab}:\ket{0_\text{in}}\left(\partial_t\right)^a=\frac{q^2a^2}{12\pi},
+\end{equation}
+que é a fórmula de Larmor para uma carga escalar (com respeito aos observadores inerciais)\cite{ren}. Aqui, \(\dd S^b\) é um vetor de um elemento de volume na esfera.
+
+Finalmente, concluímos que os modos de Rindler de energia nula tem papel crucial na conexão entre a emissão de radiação de uma carga acelerada e o efeito Unruh no limite de aceleração por um tempo próprio infinito. Além disso, encontramos uma correspondência entre os valores clássicos e quânticos.
+
+\section{Próximos passos}
+No período de vigência que segue, pretendemos estudar um problema original: como um observador (detector) acelerado enxerga um espaço-tempo de Minkowski com uma carga escalar em repouso. 
+
+Além disso, pretendemos estudar outros efeitos paradigmáticos importantes da teoria, como por exemplo, o efeito Hawking. Dependendo do seguimento, também é pretendido estudar a formulação algébrica da teoria quântica de campos em espaços-tempos curvos.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+\nocite{*}
 \end{document}
